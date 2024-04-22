@@ -1,4 +1,4 @@
-#!/home/behrad/projects/carPriceEstimator/venv/bin/python3
+#!/home/behrad/projects/CarPriceEstimatorBot/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

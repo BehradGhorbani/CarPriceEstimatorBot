@@ -1,0 +1,16 @@
+{
+    "SELECT_CAR": {
+        "fa":"ماشین مورد نظر را انتخاب کنید:",
+        "en": "Select The Car:"
+    },
+
+    "RELEASE_DATE": {
+        "fa":"سال ساخت ماشین را وارد کنید:",
+        "en": "Enter Car Release Date:"
+    },
+
+    "CAR_NAME_ERROR": {
+        "fa": "لطفا اول ماشین مورد نظر را از استارت انتخاب کنید.",
+        "en": "Select Car Name First From Start Menu"
+    }
+}
