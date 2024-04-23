@@ -4,7 +4,8 @@ from os import getenv
 from predictorService import pricePredictor
 from datasetService import getColumn
 from datetime import datetime
- 
+from i18n import getPhrase
+
 
 load_dotenv()
 
@@ -14,6 +15,7 @@ proxy = getenv('PROXY')
 if (proxy):
     apihelper.proxy = {'https': proxy}
 
+print ('~~~~~~~~~~+Bot Started+~~~~~~~~~~')
 carNames = getColumn(0, getenv('DATASET_PATH'))
 
 @bot.message_handler(commands=['start'])
@@ -24,9 +26,9 @@ def carListMessage(message):
         for name in carNames:
             inlineMarkup.add(types.InlineKeyboardButton(name, callback_data=name, switch_inline_query_current_chat="command"))
 
-        bot.send_message(text='ماشین مورد نظر را انتخاب کنید:', chat_id=message.from_user.id,reply_markup=inlineMarkup)
-    except:
-        print('ERROR')
+        bot.send_message(text=getPhrase('SELECT_CAR', 'en'), chat_id=message.from_user.id,reply_markup=inlineMarkup)
+    except NameError:
+        print(NameError)
 
 
 def carNameValidator(data):
@@ -58,7 +60,7 @@ def predict(message):
 
         if(not carName):
             return bot.send_message(text="لطفا اول ماشین مورد نظر را انتخاب کنید.",chat_id=chatId)
-       
+
         releaseDate= int(message.text)
         predicted_price = pricePredictor(carName, releaseDate)
 
