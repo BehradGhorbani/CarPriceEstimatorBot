@@ -1,0 +1,4 @@
+BOT_TOKEN='token'
+ADMIN_CHAT_ID='1245789633'
+DATASET_PATH="dataset.csv"
+PROXY="http://127.0.0.1:5000"
