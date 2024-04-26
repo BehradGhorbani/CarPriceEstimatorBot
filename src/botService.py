@@ -2,9 +2,10 @@ from telebot import TeleBot, apihelper, types
 from dotenv import load_dotenv
 from os import getenv
 from predictorService import pricePredictor
-from datasetService import getColumn
+from datasetService import getColumn, createDataset
 from datetime import datetime
 from i18n import getPhrase
+import locale
 
 
 load_dotenv()
@@ -15,18 +16,24 @@ proxy = getenv('PROXY')
 if (proxy):
     apihelper.proxy = {'https': proxy}
 
-print ('~~~~~~~~~~+Bot Started+~~~~~~~~~~')
+print ('~~~~~~~~~~+ Engine Started +~~~~~~~~~~')
+
+#createDataset(getenv('DATASET_PATH'))
 carNames = getColumn(0, getenv('DATASET_PATH'))
+
+locale.setlocale(locale.LC_ALL, 'C')
 
 @bot.message_handler(commands=['start'])
 def carListMessage(message):
     try:
-        inlineMarkup = types.InlineKeyboardMarkup(row_width=2)
+        inlineMarkup = types.InlineKeyboardMarkup(row_width=3)
+        carBtns = []
 
         for name in carNames:
-            inlineMarkup.add(types.InlineKeyboardButton(name, callback_data=name, switch_inline_query_current_chat="command"))
+            carBtns.append(types.InlineKeyboardButton(name, callback_data=name, switch_inline_query_current_chat="command"))
 
-        bot.send_message(text=getPhrase('SELECT_CAR', 'en'), chat_id=message.from_user.id,reply_markup=inlineMarkup)
+        inlineMarkup.add(*carBtns)
+        bot.send_message(text="ماشین مورد نظر را انتخاب کنید:", chat_id=message.from_user.id,reply_markup=inlineMarkup)
     except NameError:
         print(NameError)
 
@@ -62,9 +69,8 @@ def predict(message):
             return bot.send_message(text="لطفا اول ماشین مورد نظر را انتخاب کنید.",chat_id=chatId)
 
         releaseDate= int(message.text)
-        predicted_price = pricePredictor(carName, releaseDate)
+        predicted_price = '${:,.2f}'.format(pricePredictor(carName, releaseDate))
 
-        print(carName, releaseDate)
         bot.reply_to(text=predicted_price, message=message)
     except:
         print('ERROR')

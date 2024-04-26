@@ -36,5 +36,5 @@ def pricePredictor(car_type, date):
     car_type_enc = label_encoder.transform([car_type])[0]
     print (car_type_enc, date)
 
-    return model.predict([[car_type_enc, date]])[0].round(0)
+    return int(model.predict([[car_type_enc, date]])[0])
 
